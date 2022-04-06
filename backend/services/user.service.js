@@ -1,5 +1,6 @@
 const DbMixin = require("../mixins/db.mixin");
 const jwt = require("jsonwebtoken");
+const { ErrorCode, getErrorMessage } = require("../errorCode");
 
 module.exports = {
 	name: "user",
@@ -21,15 +22,19 @@ module.exports = {
 			},
 			async handler(ctx) {
 				const { username, password } = ctx.params;
-				const matchUsers =  await this.adapter.find({ query: { username } });
-				if (!Array.isArray(matchUsers) || !matchUsers.length) {
-					return { returncode: -1, returnmessage: "The user is not existed" };
+				try {
+					const code = await this.validateUser(username, password);
+					return {
+						returncode: code,
+						returnmessage: getErrorMessage(code),
+						token: this.generateJWT(username),
+					};
+				} catch (errorCode) {
+					return {
+						returncode: errorCode,
+						returnmessage: getErrorMessage(errorCode),
+					};
 				}
-				const [user] = matchUsers;
-				if (password !== user.password) {
-					return { returncode: -2, returnmessage: "The password is wrong" };
-				}
-				return { returncode: 1, returnmessage: "Success", token: this.generateJWT(user) };
 			}
 		},
 	},
@@ -46,16 +51,26 @@ module.exports = {
 				{"username":"thangtm","password":"654321"}
 			]);
 		},
-		generateJWT(user) {
+		generateJWT(userName) {
 			const today = new Date();
 			const exp = new Date(today);
 			exp.setDate(today.getDate() + 30);
 
 			return jwt.sign({
-				id: user._id,
-				username: user.username,
+				username: userName,
 				exp: Math.floor(exp.getTime() / 1000)
 			}, this.settings.JWT_SECRET_KEY);
 		},
+		async validateUser(userName, password) {
+			const matchUsers = await this.adapter.find({ query: { username: userName } });
+			if (!Array.isArray(matchUsers) || !matchUsers.length) {
+				throw ErrorCode.UserNameNotExist;
+			}
+			const [user] = matchUsers;
+			if (password !== user.password) {
+				throw ErrorCode.PasswordWrong;
+			}
+			return ErrorCode.Success;
+		}
 	},
 };
