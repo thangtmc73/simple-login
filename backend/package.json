@@ -25,11 +25,13 @@
     "moleculer-repl": "^0.6.6"
   },
   "dependencies": {
-    "moleculer-web": "^0.10.2",
+    "dotenv": "^16.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "moleculer": "^0.14.16",
     "moleculer-db": "^0.8.15",
     "moleculer-db-adapter-mongo": "^0.4.13",
-    "nats": "^2.2.0",
-    "moleculer": "^0.14.16"
+    "moleculer-web": "^0.10.2",
+    "nats": "^2.2.0"
   },
   "engines": {
     "node": ">= 12.x.x"
