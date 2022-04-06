@@ -12,6 +12,8 @@ module.exports = {
 		port: process.env.PORT || 3000,
 
 		routes: [{
+			// Configures the Access-Control-Allow-Origin CORS header.
+			origin: "*",
 			path: "/api",
 			whitelist: [
 				// Access to any actions in all services
@@ -22,7 +24,12 @@ module.exports = {
 			bodyParsers: {
 				json: true,
 				urlencoded: { extended: true }
-			}
+			},
+			cors: {
+				origin: ["http://localhost:3000", "https://localhost:4000"],
+				methods: ["GET", "OPTIONS", "POST"],
+				credentials: true
+			},
 		}]
 
 	}
