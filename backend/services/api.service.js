@@ -18,6 +18,11 @@ module.exports = {
 				"**"
 			],
 			autoAliases: true,
+			// Use bodyparser modules
+			bodyParsers: {
+				json: true,
+				urlencoded: { extended: true }
+			}
 		}]
 
 	}
