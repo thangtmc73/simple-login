@@ -5,6 +5,10 @@ import {
 import "./Login.scss";
 import useInputChange from "../hooks/useInputChange";
 import useAuthen from "../hooks/useAuthen";
+import {
+  validateUserName,
+  validatePassword,
+} from "../utils";
 
 function Login() {
   const [userName, handleUserNameChange] = useInputChange("");
@@ -15,6 +19,14 @@ function Login() {
 
   function handleLoginClick(e) {
     e.preventDefault();
+    if (!validateUserName(userName)) {
+      setErrorMessage("The username is invalid");
+      return;
+    }
+    if (!validatePassword(password)) {
+      setErrorMessage("The password is invalid");
+      return;
+    }
     signIn({
       userName, password
     }, () => {
@@ -44,7 +56,7 @@ function Login() {
           handlePasswordChange(e);
         }}
       />
-      <button onClick={handleLoginClick}>Login</button>
+      <button disabled={!userName} onClick={handleLoginClick}>Login</button>
     </form>
   )
 }
