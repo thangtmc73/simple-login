@@ -1,0 +1,10 @@
+.component__user-status {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+
+  a {
+    text-decoration: underline;
+    margin-left: 4px;
+  }
+}
