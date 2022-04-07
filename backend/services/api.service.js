@@ -9,7 +9,7 @@ module.exports = {
 
 	// More info about settings: http://moleculer.services/docs/moleculer-web.html
 	settings: {
-		port: process.env.PORT || 3000,
+		port: process.env.PORT || 4000,
 
 		routes: [{
 			// Configures the Access-Control-Allow-Origin CORS header.
