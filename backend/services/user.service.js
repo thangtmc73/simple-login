@@ -27,6 +27,7 @@ module.exports = {
 					return {
 						returncode: code,
 						returnmessage: getErrorMessage(code),
+						username: username,
 						token: this.generateJWT(username),
 					};
 				} catch (errorCode) {
